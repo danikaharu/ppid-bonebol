@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Klasifikasi\{StoreKlasifikasiRequest, UpdateKlasifikasiRequest};
 use App\Models\Klasifikasi;
-use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class KlasifikasiController extends Controller
@@ -29,7 +30,7 @@ class KlasifikasiController extends Controller
      */
     public function create()
     {
-        return view('be.klasifikasi.create',[
+        return view('be.klasifikasi.create', [
             'title' => 'Tambah Klasifikasi'
         ]);
     }
@@ -40,21 +41,18 @@ class KlasifikasiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreKlasifikasiRequest $request)
     {
-        $request->validate(['klasifikasi' => ['required']]);
+        $attr = $request->validated();
 
-        $klasifikasi = new Klasifikasi([
-            'klasifikasi' => $request->klasifikasi
-        ]);
-        $klasifikasi->save();
+        $klasifikasi = Klasifikasi::create($attr);
 
-        if($klasifikasi){
-            Alert::success('Berhasil','Klasifikasi berhasil di tambahkan');
-            return redirect()->route('admin.klasifikasi');
+        if ($klasifikasi) {
+            Alert::success('Berhasil', 'Klasifikasi berhasil di tambahkan');
+            return redirect()->route('admin.klasifikasi.index');
         } else {
-            Alert::error('Gagal','Klasifikasi gagal di tambahkan');
-            return redirect()->route('admin.klasifikasi');
+            Alert::error('Gagal', 'Klasifikasi gagal di tambahkan');
+            return redirect()->route('admin.klasifikasi.index');
         }
     }
 
@@ -66,7 +64,6 @@ class KlasifikasiController extends Controller
      */
     public function show(Klasifikasi $klasifikasi)
     {
-        //
     }
 
     /**
@@ -75,9 +72,8 @@ class KlasifikasiController extends Controller
      * @param  \App\Models\Klasifikasi  $klasifikasi
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Klasifikasi $klasifikasi)
     {
-        $klasifikasi = Klasifikasi::findorfail($id);
         return view('be.klasifikasi.edit', [
             'title' => 'Edit Klasifikasi',
             'data' => $klasifikasi
@@ -91,24 +87,18 @@ class KlasifikasiController extends Controller
      * @param  \App\Models\Klasifikasi  $klasifikasi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateKlasifikasiRequest $request, Klasifikasi $klasifikasi)
     {
-        $request->validate(['klasifikasi' => ['required']]);
+        $attr = $request->validated();
 
-        $klasifikasi = Klasifikasi::findorfail($id);
+        $klasifikasi->update($attr);
 
-        $data_klasifikasi = [
-            'klasifikasi' => $request->klasifikasi
-        ];
-
-        $klasifikasi->update($data_klasifikasi);
-
-        if($klasifikasi){
-            Alert::success('Berhasil','Klasifikasi berhasil di perbarui');
-            return redirect()->route('admin.klasifikasi');
+        if ($klasifikasi) {
+            Alert::success('Berhasil', 'Klasifikasi berhasil di perbarui');
+            return redirect()->route('admin.klasifikasi.index');
         } else {
-            Alert::error('Gagal','Klasifikasi gagal di perbarui');
-            return redirect()->route('admin.klasifikasi');
+            Alert::error('Gagal', 'Klasifikasi gagal di perbarui');
+            return redirect()->route('admin.klasifikasi.index');
         }
     }
 
@@ -118,17 +108,12 @@ class KlasifikasiController extends Controller
      * @param  \App\Models\Klasifikasi  $klasifikasi
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Klasifikasi $klasifikasi)
     {
-        $klasifikasi_data = Klasifikasi::findorfail($id);
-        $klasifikasi = Klasifikasi::where('id', $klasifikasi_data->id)->delete();
+        $klasifikasi->delete();
 
-        if($klasifikasi){
-            Alert::success('Berhasil','Klasifikasi berhasil di hapus');
-            return redirect()->route('admin.klasifikasi');
-        } else {
-            Alert::error('Gagal','Klasifikasi gagal di hapus');
-            return redirect()->route('admin.klasifikasi');
-        }
+        Alert::success('Berhasil', 'Klasifikasi berhasil di hapus');
+
+        return redirect()->route('admin.klasifikasi.index');
     }
 }
