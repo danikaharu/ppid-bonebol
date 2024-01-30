@@ -20,11 +20,11 @@ class InformasiPublik extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault();
     }
 
     public function klasifikasi()
     {
-        return $this->belongsTo(Klasifikasi::class, 'klasifikasi_id', 'id');
+        return $this->belongsTo(Klasifikasi::class, 'klasifikasi_id', 'id')->withDefault();
     }
 }

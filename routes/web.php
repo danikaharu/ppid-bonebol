@@ -50,98 +50,92 @@ Route::post('/kontakkami', [UserController::class, 'kontakkami'])->name('kontakk
 Auth::routes(['register' => false]);
 
 // Route Admin
-Route::group(['middleware' => ['auth','role:admin'],'prefix'=>'admin'],function (){
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/akun', [AdminController::class, 'akun'])->name('admin.akun');
-    Route::put('/akun/update/{id}', [AdminController::class, 'akunupdate'])->name('admin.akun.update');
-    Route::get('/akun/password', [AdminController::class, 'akunpassword'])->name('admin.password');
-    Route::put('/akun/password/update/{id}', [AdminController::class, 'akunpasswordupdate'])->name('admin.password.update');
+Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/akun', [AdminController::class, 'akun'])->name('akun');
+    Route::put('/akun/update/{id}', [AdminController::class, 'akunupdate'])->name('akun.update');
+    Route::get('/akun/password', [AdminController::class, 'akunpassword'])->name('password');
+    Route::put('/akun/password/update/{id}', [AdminController::class, 'akunpasswordupdate'])->name('password.update');
 
-    Route::get('/klasifikasi', [KlasifikasiController::class, 'index'])->name('admin.klasifikasi');
-    Route::get('/klasifikasi/create', [KlasifikasiController::class, 'create'])->name('admin.klasifikasi.create');
-    Route::post('/klasifikasi/store', [KlasifikasiController::class, 'store'])->name('admin.klasifikasi.store');
-    Route::get('/klasifikasi/edit/{id}', [KlasifikasiController::class, 'edit'])->name('admin.klasifikasi.edit');
-    Route::put('/klasifikasi/update/{id}', [KlasifikasiController::class, 'update'])->name('admin.klasifikasi.update');
-    Route::delete('/klasifikasi/destroy/{id}', [KlasifikasiController::class, 'destroy'])->name('admin.klasifikasi.destroy');
+    Route::get('/klasifikasi', [KlasifikasiController::class, 'index'])->name('klasifikasi');
+    Route::get('/klasifikasi/create', [KlasifikasiController::class, 'create'])->name('klasifikasi.create');
+    Route::post('/klasifikasi/store', [KlasifikasiController::class, 'store'])->name('klasifikasi.store');
+    Route::get('/klasifikasi/edit/{id}', [KlasifikasiController::class, 'edit'])->name('klasifikasi.edit');
+    Route::put('/klasifikasi/update/{id}', [KlasifikasiController::class, 'update'])->name('klasifikasi.update');
+    Route::delete('/klasifikasi/destroy/{id}', [KlasifikasiController::class, 'destroy'])->name('klasifikasi.destroy');
 
     // Informasi Publikasi
-    Route::get('/infopub',[PetugasInformasiPublikController::class, 'index'])->name('admin.informasipublik');
-    Route::get('/infopub/create', [PetugasInformasiPublikController::class, 'create'])->name('admin.informasipublik.create');
-    Route::post('/infopub/store',[PetugasInformasiPublikController::class, 'store'])->name('admin.informasipublik.store');
-    Route::get('/infopub/show/{id}',[PetugasInformasiPublikController::class, 'show'])->name('admin.informasipublik.show');
-    Route::delete('infpub/destroy/{id}',[PetugasInformasiPublikController::class,'destroy'])->name('admin.informasipublik.destroy');
-    Route::get('/infopub/edit/{id}',[PetugasInformasiPublikController::class,'edit'])->name('admin.informasipublik.edit');
-    Route::put('/infopub/update/{id}',[PetugasInformasiPublikController::class,'update'])->name('admin.informasipublik.update');
+    Route::resource('/infopub', App\Http\Controllers\Admin\InformasiPublikController::class);
 
     // Permohonan Informasi
-    Route::get('/permohonaninformasi', [PetugasPermohonanInformasiController::class, 'index'])->name('admin.permohonaninformasi');
-    Route::get('/permohonaninformasi/proses/{id}', [PetugasPermohonanInformasiController::class, 'proses'])->name('admin.permohonaninformasi.proses');
-    Route::get('/permohonaninformasi/show/{id}', [PetugasPermohonanInformasiController::class, 'show'])->name('admin.permohonaninformasi.show');
-    Route::put('/permohonaninformasi/terima/{id}', [PetugasPermohonanInformasiController::class, 'terima'])->name('admin.permohonaninformasi.terima');
-    Route::put('/permohonaninformasi/batalterima/{id}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('admin.permohonaninformasi.batalterima');
-    Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('admin.permohonaninformasi.sendterima');
-    Route::put('/permohonaninformasi/tolak/{id}', [PetugasPermohonanInformasiController::class, 'tolak'])->name('admin.permohonaninformasi.tolak');
-    Route::put('/permohonaninformasi/sendtolak/{id}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('admin.permohonaninformasi.sendtolak');
+    Route::get('/permohonaninformasi', [PetugasPermohonanInformasiController::class, 'index'])->name('permohonaninformasi');
+    Route::get('/permohonaninformasi/proses/{id}', [PetugasPermohonanInformasiController::class, 'proses'])->name('permohonaninformasi.proses');
+    Route::get('/permohonaninformasi/show/{id}', [PetugasPermohonanInformasiController::class, 'show'])->name('permohonaninformasi.show');
+    Route::put('/permohonaninformasi/terima/{id}', [PetugasPermohonanInformasiController::class, 'terima'])->name('permohonaninformasi.terima');
+    Route::put('/permohonaninformasi/batalterima/{id}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('permohonaninformasi.batalterima');
+    Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('permohonaninformasi.sendterima');
+    Route::put('/permohonaninformasi/tolak/{id}', [PetugasPermohonanInformasiController::class, 'tolak'])->name('permohonaninformasi.tolak');
+    Route::put('/permohonaninformasi/sendtolak/{id}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
 
-    Route::delete('/permohonaninformasi/destroy/{id}', [PermohonanInformasiController::class, 'userdestroypermohonaninformasi'])->name('admin.permohonaninformasi.destroy');
-    Route::get('/permohonaninformasi/edit/{id}', [PermohonanInformasiController::class, 'usereditpermohonaninformasi'])->name('admin.permohonaninformasi.edit');
-    Route::put('/permohonaninformasi/update/{id}', [PermohonanInformasiController::class, 'userupdatepermohonaninformasi'])->name('admin.permohonaninformasi.update');
+    Route::delete('/permohonaninformasi/destroy/{id}', [PermohonanInformasiController::class, 'userdestroypermohonaninformasi'])->name('permohonaninformasi.destroy');
+    Route::get('/permohonaninformasi/edit/{id}', [PermohonanInformasiController::class, 'usereditpermohonaninformasi'])->name('permohonaninformasi.edit');
+    Route::put('/permohonaninformasi/update/{id}', [PermohonanInformasiController::class, 'userupdatepermohonaninformasi'])->name('permohonaninformasi.update');
 
     // Pengajuan Keberatan
-    Route::get('/pengajuankeberatan', [PetugasPengajuanKeberatanController::class, 'index'])->name('admin.pengajuankeberatan');
-    Route::get('/pengajuankeberatan/show/{id}', [PetugasPengajuanKeberatanController::class, 'show'])->name('admin.pengajuankeberatan.show');
-    Route::put('/pengajuankeberatan/terima/{id}', [PetugasPengajuanKeberatanController::class, 'terima'])->name('admin.pengajuankeberatan.terima');
-    Route::put('/pengajuankeberatan/tolak/{id}', [PetugasPengajuanKeberatanController::class, 'tolak'])->name('admin.pengajuankeberatan.tolak');
-    Route::put('/pengajuankeberatan/sendterima/{id}', [PetugasPengajuanKeberatanController::class, 'sendterima'])->name('admin.pengajuankeberatan.sendterima');
-    Route::put('/pengajuankeberatan/sendtolak/{id}', [PetugasPengajuanKeberatanController::class, 'sendtolak'])->name('admin.pengajuankeberatan.sendtolak');
+    Route::get('/pengajuankeberatan', [PetugasPengajuanKeberatanController::class, 'index'])->name('pengajuankeberatan');
+    Route::get('/pengajuankeberatan/show/{id}', [PetugasPengajuanKeberatanController::class, 'show'])->name('pengajuankeberatan.show');
+    Route::put('/pengajuankeberatan/terima/{id}', [PetugasPengajuanKeberatanController::class, 'terima'])->name('pengajuankeberatan.terima');
+    Route::put('/pengajuankeberatan/tolak/{id}', [PetugasPengajuanKeberatanController::class, 'tolak'])->name('pengajuankeberatan.tolak');
+    Route::put('/pengajuankeberatan/sendterima/{id}', [PetugasPengajuanKeberatanController::class, 'sendterima'])->name('pengajuankeberatan.sendterima');
+    Route::put('/pengajuankeberatan/sendtolak/{id}', [PetugasPengajuanKeberatanController::class, 'sendtolak'])->name('pengajuankeberatan.sendtolak');
 
-    Route::delete('/pengajuankeberatan/destroy/{id}', [PengajuanKeberatanController::class, 'destroy'])->name('admin.pengajuankeberatan.destroy');
-    Route::get('/pengajuankeberatan/edit/{id}', [PengajuanKeberatanController::class, 'edit'])->name('admin.pengajuankeberatan.edit');
-    Route::put('/pengajuankeberatan/update/{id}', [PengajuanKeberatanController::class, 'update'])->name('admin.pengajuankeberatan.update');
+    Route::delete('/pengajuankeberatan/destroy/{id}', [PengajuanKeberatanController::class, 'destroy'])->name('pengajuankeberatan.destroy');
+    Route::get('/pengajuankeberatan/edit/{id}', [PengajuanKeberatanController::class, 'edit'])->name('pengajuankeberatan.edit');
+    Route::put('/pengajuankeberatan/update/{id}', [PengajuanKeberatanController::class, 'update'])->name('pengajuankeberatan.update');
     Route::get('/getpermohonaninformasi/{id}', [PengajuanKeberatanController::class, 'getPermohonanInformasi']);
-    
-    Route::get('/petugas', [AdminController::class, 'user'])->name('admin.petugas');
-    Route::get('/petugas/create', [AdminController::class, 'usercreate'])->name('admin.petugas.create');
-    Route::post('/petugas/store', [AdminController::class, 'userstore'])->name('admin.petugas.store');
-    Route::get('/petugas/password/{id}', [AdminController::class, 'userpassword'])->name('admin.petugas.password');
-    Route::get('/pemohon/password/{id}', [AdminController::class, 'userpassword'])->name('admin.pemohon.password');
-    Route::put('/petugas/password/update/{id}', [AdminController::class, 'userpasswordupdate'])->name('admin.password.update');
-    Route::get('/pemohon', [AdminController::class, 'user'])->name('admin.pemohon');
-    Route::get('/petugas/show/{id}', [AdminController::class, 'usershow'])->name('admin.petugas.show');
-    Route::get('/pemohon/show/{id}', [AdminController::class, 'usershow'])->name('admin.pemohon.show');
-    Route::get('/petugas/edit/{id}', [AdminController::class, 'useredit'])->name('admin.petugas.edit');
-    Route::get('/pemohon/edit/{id}', [AdminController::class, 'useredit'])->name('admin.pemohon.edit');
-    Route::put('/petugas/update/{id}', [AdminController::class, 'userupdate'])->name('admin.petugas.update');
-    Route::put('/pemohon/update/{id}', [AdminController::class, 'userupdate'])->name('admin.pemohon.update');
-    Route::delete('/petugas/destroy/{id}', [AdminController::class, 'userdestroy'])->name('admin.petugas.destroy');
-    Route::delete('/pemohon/destroy/{id}', [AdminController::class, 'userdestroy'])->name('admin.pemohon.destroy');
 
-    Route::get('/profilkantor', [ProfilKantorController::class, 'index'])->name('admin.profilkantor');
-    Route::put('/profilkantor/update/{id}', [ProfilKantorController::class, 'update'])->name('admin.profilkantor.update');
-    Route::get('/kotakpesan', [KontakKamiController::class, 'index'])->name('admin.kotakpesan');
-    Route::delete('/kotakpesan/destroy/{id}', [KontakKamiController::class, 'destroy'])->name('admin.kotakpesan.destroy');
+    Route::get('/petugas', [AdminController::class, 'user'])->name('petugas');
+    Route::get('/petugas/create', [AdminController::class, 'usercreate'])->name('petugas.create');
+    Route::post('/petugas/store', [AdminController::class, 'userstore'])->name('petugas.store');
+    Route::get('/petugas/password/{id}', [AdminController::class, 'userpassword'])->name('petugas.password');
+    Route::get('/pemohon/password/{id}', [AdminController::class, 'userpassword'])->name('pemohon.password');
+    Route::put('/petugas/password/update/{id}', [AdminController::class, 'userpasswordupdate'])->name('password.update');
+    Route::get('/pemohon', [AdminController::class, 'user'])->name('pemohon');
+    Route::get('/petugas/show/{id}', [AdminController::class, 'usershow'])->name('petugas.show');
+    Route::get('/pemohon/show/{id}', [AdminController::class, 'usershow'])->name('pemohon.show');
+    Route::get('/petugas/edit/{id}', [AdminController::class, 'useredit'])->name('petugas.edit');
+    Route::get('/pemohon/edit/{id}', [AdminController::class, 'useredit'])->name('pemohon.edit');
+    Route::put('/petugas/update/{id}', [AdminController::class, 'userupdate'])->name('petugas.update');
+    Route::put('/pemohon/update/{id}', [AdminController::class, 'userupdate'])->name('pemohon.update');
+    Route::delete('/petugas/destroy/{id}', [AdminController::class, 'userdestroy'])->name('petugas.destroy');
+    Route::delete('/pemohon/destroy/{id}', [AdminController::class, 'userdestroy'])->name('pemohon.destroy');
 
-    Route::get('/laporan', [AdminController::class, 'laporan'])->name('admin.laporan');
-    Route::get('/laporan/search', [AdminController::class, 'laporansearch'])->name('admin.laporan.search');
+    Route::get('/profilkantor', [ProfilKantorController::class, 'index'])->name('profilkantor');
+    Route::put('/profilkantor/update/{id}', [ProfilKantorController::class, 'update'])->name('profilkantor.update');
+    Route::get('/kotakpesan', [KontakKamiController::class, 'index'])->name('kotakpesan');
+    Route::delete('/kotakpesan/destroy/{id}', [KontakKamiController::class, 'destroy'])->name('kotakpesan.destroy');
+
+    Route::get('/laporan', [AdminController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/search', [AdminController::class, 'laporansearch'])->name('laporan.search');
 });
 
 // Route Petugas
-Route::group(['middleware' => ['auth','role:petugas'],'prefix'=>'petugas'],function (){
+Route::group(['middleware' => ['auth', 'role:petugas'], 'prefix' => 'petugas'], function () {
     Route::get('/dashboard', [PetugasController::class, 'index'])->name('petugas.dashboard');
     Route::get('/akun', [PetugasController::class, 'akun'])->name('petugas.akun');
     Route::put('/akun/update/{id}', [PetugasController::class, 'akunupdate'])->name('petugas.akun.update');
     Route::get('/akun/password', [PetugasController::class, 'akunpassword'])->name('petugas.password');
     Route::put('/akun/password/update/{id}', [PetugasController::class, 'akunpasswordupdate'])->name('petugas.password.update');
-    
+
     // Informasi Publikasi
-    Route::get('/infopub',[PetugasInformasiPublikController::class, 'index'])->name('petugas.informasipublik');
+    Route::get('/infopub', [PetugasInformasiPublikController::class, 'index'])->name('petugas.informasipublik');
     Route::get('/infopub/create', [PetugasInformasiPublikController::class, 'create'])->name('petugas.informasipublik.create');
-    Route::post('/infopub/store',[PetugasInformasiPublikController::class, 'store'])->name('petugas.informasipublik.store');
-    Route::get('/infopub/show/{id}',[PetugasInformasiPublikController::class, 'show'])->name('petugas.informasipublik.show');
-    Route::delete('infpub/destroy/{id}',[PetugasInformasiPublikController::class,'destroy'])->name('petugas.informasipublik.destroy');
-    Route::get('/infopub/edit/{id}',[PetugasInformasiPublikController::class,'edit'])->name('petugas.informasipublik.edit');
-    Route::put('/infopub/update/{id}',[PetugasInformasiPublikController::class,'update'])->name('petugas.informasipublik.update');
-    
+    Route::post('/infopub/store', [PetugasInformasiPublikController::class, 'store'])->name('petugas.informasipublik.store');
+    Route::get('/infopub/show/{id}', [PetugasInformasiPublikController::class, 'show'])->name('petugas.informasipublik.show');
+    Route::delete('infpub/destroy/{id}', [PetugasInformasiPublikController::class, 'destroy'])->name('petugas.informasipublik.destroy');
+    Route::get('/infopub/edit/{id}', [PetugasInformasiPublikController::class, 'edit'])->name('petugas.informasipublik.edit');
+    Route::put('/infopub/update/{id}', [PetugasInformasiPublikController::class, 'update'])->name('petugas.informasipublik.update');
+
     // Permohonan Informasi
     Route::get('/permohonaninformasi', [PetugasPermohonanInformasiController::class, 'index'])->name('petugas.permohonaninformasi');
     Route::get('/permohonaninformasi/proses/{id}', [PetugasPermohonanInformasiController::class, 'proses'])->name('petugas.permohonaninformasi.proses');
@@ -151,7 +145,7 @@ Route::group(['middleware' => ['auth','role:petugas'],'prefix'=>'petugas'],funct
     Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('petugas.permohonaninformasi.sendterima');
     Route::put('/permohonaninformasi/tolak/{id}', [PetugasPermohonanInformasiController::class, 'tolak'])->name('petugas.permohonaninformasi.tolak');
     Route::put('/permohonaninformasi/sendtolak/{id}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('petugas.permohonaninformasi.sendtolak');
-    
+
     // Pengajuan Keberatan
     Route::get('/pengajuankeberatan', [PetugasPengajuanKeberatanController::class, 'index'])->name('petugas.pengajuankeberatan');
     Route::get('/pengajuankeberatan/show/{id}', [PetugasPengajuanKeberatanController::class, 'show'])->name('petugas.pengajuankeberatan.show');
@@ -159,10 +153,10 @@ Route::group(['middleware' => ['auth','role:petugas'],'prefix'=>'petugas'],funct
     Route::put('/pengajuankeberatan/tolak/{id}', [PetugasPengajuanKeberatanController::class, 'tolak'])->name('petugas.pengajuankeberatan.tolak');
     Route::put('/pengajuankeberatan/sendterima/{id}', [PetugasPengajuanKeberatanController::class, 'sendterima'])->name('petugas.pengajuankeberatan.sendterima');
     Route::put('/pengajuankeberatan/sendtolak/{id}', [PetugasPengajuanKeberatanController::class, 'sendtolak'])->name('petugas.pengajuankeberatan.sendtolak');
-});    
+});
 
 // Route User
-Route::group(['middleware' => ['auth','role:user'],'prefix'=>'user'],function (){
+Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
     Route::get('/dashboard', [UserController::class, 'indexlogin'])->name('user.dashboard');
     Route::get('/akun', [UserController::class, 'akun'])->name('user.akun');
     Route::put('/akun/update/{id}', [UserController::class, 'akunupdate'])->name('user.akun.update');
@@ -187,7 +181,6 @@ Route::group(['middleware' => ['auth','role:user'],'prefix'=>'user'],function ()
     Route::get('/pengajuankeberatan/edit/{id}', [PengajuanKeberatanController::class, 'edit'])->name('user.pengajuankeberatan.edit');
     Route::put('/pengajuankeberatan/update/{id}', [PengajuanKeberatanController::class, 'update'])->name('user.pengajuankeberatan.update');
     Route::delete('/pengajuankeberatan/destroy/{id}', [PengajuanKeberatanController::class, 'destroy'])->name('user.pengajuankeberatan.destroy');
-    
 });    
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
