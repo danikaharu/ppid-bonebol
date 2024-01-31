@@ -24,12 +24,12 @@ class PermohonanInformasi extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault();
     }
 
     public function petugas()
     {
-        return $this->belongsTo(User::class, 'petugas_id', 'id');
+        return $this->belongsTo(User::class, 'petugas_id', 'id')->withDefault();
     }
 
     public function pengajuankeberatan()
