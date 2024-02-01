@@ -63,10 +63,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('/permohonaninformasi', App\Http\Controllers\Admin\PermohonanInformasiController::class);
     Route::get('/permohonaninformasi/proses/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'proses'])->name('permohonaninformasi.proses');
     Route::put('/permohonaninformasi/terima/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'terima'])->name('permohonaninformasi.terima');
-    Route::put('/permohonaninformasi/batalterima/{permohonaninformasi}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('permohonaninformasi.batalterima');
-    Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('permohonaninformasi.sendterima');
+    Route::put('/permohonaninformasi/batalterima/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'batalterima'])->name('permohonaninformasi.batalterima');
+    Route::put('/permohonaninformasi/sendterima/{id}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'sendterima'])->name('permohonaninformasi.sendterima');
     Route::put('/permohonaninformasi/tolak/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'tolak'])->name('permohonaninformasi.tolak');
-    Route::put('/permohonaninformasi/sendtolak/{permohonaninformasi}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
+    Route::put('/permohonaninformasi/sendtolak/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
 
 
     // Pengajuan Keberatan
@@ -100,4 +100,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
     Route::get('/laporan', [App\Http\Controllers\Admin\DashboardController::class, 'laporan'])->name('laporan');
     Route::get('/laporan/search', [App\Http\Controllers\Admin\DashboardController::class, 'laporansearch'])->name('laporan.search');
+
+    // Role
+    Route::resource('/role', \App\Http\Controllers\Admin\RoleAndPermissionController::class);
 });
