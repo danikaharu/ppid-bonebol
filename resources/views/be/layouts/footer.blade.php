@@ -5,7 +5,7 @@
         </div>
         <div class="float-end">
             <p>Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a
-                    href="https://instagram.com/holaandy_">Andi Mohamad Soreang</a></p>
+                    href="https://kominfo.bonebolangokab.go.id" target="blank">Diskominfo Bone Bolango</a></p>
         </div>
     </div>
 </footer>

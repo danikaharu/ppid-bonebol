@@ -1,12 +1,8 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InformasiPublikController;
 use App\Http\Controllers\KontakKamiController;
-use App\Http\Controllers\PengajuanKeberatanController;
 use App\Http\Controllers\PermohonanInformasiController;
-use App\Http\Controllers\PetugasController;
-use App\Http\Controllers\PetugasPengajuanKeberatanController;
 use App\Http\Controllers\PetugasPermohonanInformasiController;
 use App\Http\Controllers\ProfilKantorController;
 use App\Http\Controllers\UserController;
@@ -64,31 +60,22 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('/infopub', App\Http\Controllers\Admin\InformasiPublikController::class);
 
     // Permohonan Informasi
-    Route::get('/permohonaninformasi', [PetugasPermohonanInformasiController::class, 'index'])->name('permohonaninformasi');
-    Route::get('/permohonaninformasi/proses/{id}', [PetugasPermohonanInformasiController::class, 'proses'])->name('permohonaninformasi.proses');
-    Route::get('/permohonaninformasi/show/{id}', [PetugasPermohonanInformasiController::class, 'show'])->name('permohonaninformasi.show');
-    Route::put('/permohonaninformasi/terima/{id}', [PetugasPermohonanInformasiController::class, 'terima'])->name('permohonaninformasi.terima');
-    Route::put('/permohonaninformasi/batalterima/{id}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('permohonaninformasi.batalterima');
+    Route::resource('/permohonaninformasi', App\Http\Controllers\Admin\PermohonanInformasiController::class);
+    Route::get('/permohonaninformasi/proses/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'proses'])->name('permohonaninformasi.proses');
+    Route::put('/permohonaninformasi/terima/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'terima'])->name('permohonaninformasi.terima');
+    Route::put('/permohonaninformasi/batalterima/{permohonaninformasi}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('permohonaninformasi.batalterima');
     Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('permohonaninformasi.sendterima');
-    Route::put('/permohonaninformasi/tolak/{id}', [PetugasPermohonanInformasiController::class, 'tolak'])->name('permohonaninformasi.tolak');
-    Route::put('/permohonaninformasi/sendtolak/{id}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
+    Route::put('/permohonaninformasi/tolak/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'tolak'])->name('permohonaninformasi.tolak');
+    Route::put('/permohonaninformasi/sendtolak/{permohonaninformasi}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
 
-    Route::delete('/permohonaninformasi/destroy/{id}', [PermohonanInformasiController::class, 'userdestroypermohonaninformasi'])->name('permohonaninformasi.destroy');
-    Route::get('/permohonaninformasi/edit/{id}', [PermohonanInformasiController::class, 'usereditpermohonaninformasi'])->name('permohonaninformasi.edit');
-    Route::put('/permohonaninformasi/update/{id}', [PermohonanInformasiController::class, 'userupdatepermohonaninformasi'])->name('permohonaninformasi.update');
 
     // Pengajuan Keberatan
-    Route::get('/pengajuankeberatan', [PetugasPengajuanKeberatanController::class, 'index'])->name('pengajuankeberatan');
-    Route::get('/pengajuankeberatan/show/{id}', [PetugasPengajuanKeberatanController::class, 'show'])->name('pengajuankeberatan.show');
-    Route::put('/pengajuankeberatan/terima/{id}', [PetugasPengajuanKeberatanController::class, 'terima'])->name('pengajuankeberatan.terima');
-    Route::put('/pengajuankeberatan/tolak/{id}', [PetugasPengajuanKeberatanController::class, 'tolak'])->name('pengajuankeberatan.tolak');
-    Route::put('/pengajuankeberatan/sendterima/{id}', [PetugasPengajuanKeberatanController::class, 'sendterima'])->name('pengajuankeberatan.sendterima');
-    Route::put('/pengajuankeberatan/sendtolak/{id}', [PetugasPengajuanKeberatanController::class, 'sendtolak'])->name('pengajuankeberatan.sendtolak');
-
-    Route::delete('/pengajuankeberatan/destroy/{id}', [PengajuanKeberatanController::class, 'destroy'])->name('pengajuankeberatan.destroy');
-    Route::get('/pengajuankeberatan/edit/{id}', [PengajuanKeberatanController::class, 'edit'])->name('pengajuankeberatan.edit');
-    Route::put('/pengajuankeberatan/update/{id}', [PengajuanKeberatanController::class, 'update'])->name('pengajuankeberatan.update');
-    Route::get('/getpermohonaninformasi/{id}', [PengajuanKeberatanController::class, 'getPermohonanInformasi']);
+    Route::resource('/pengajuankeberatan', App\Http\Controllers\Admin\PengajuanKeberatanController::class);
+    Route::put('/pengajuankeberatan/terima/{id}', [App\Http\Controllers\Admin\PengajuanKeberatanController::class, 'terima'])->name('pengajuankeberatan.terima');
+    Route::put('/pengajuankeberatan/tolak/{pengajuankeberatan}', [App\Http\Controllers\Admin\PengajuanKeberatanController::class, 'tolak'])->name('pengajuankeberatan.tolak');
+    Route::put('/pengajuankeberatan/sendterima/{id}', [App\Http\Controllers\Admin\PengajuanKeberatanController::class, 'sendterima'])->name('pengajuankeberatan.sendterima');
+    Route::put('/pengajuankeberatan/sendtolak/{id}', [App\Http\Controllers\Admin\PengajuanKeberatanController::class, 'sendtolak'])->name('pengajuankeberatan.sendtolak');
+    Route::get('/getpermohonaninformasi/{permohonaninformasi}', [App\Http\Controllers\Admin\PengajuanKeberatanController::class, 'getPermohonanInformasi']);
 
     Route::get('/petugas', [App\Http\Controllers\Admin\DashboardController::class, 'user'])->name('petugas');
     Route::get('/petugas/create', [App\Http\Controllers\Admin\DashboardController::class, 'usercreate'])->name('petugas.create');
@@ -114,63 +101,3 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('/laporan', [App\Http\Controllers\Admin\DashboardController::class, 'laporan'])->name('laporan');
     Route::get('/laporan/search', [App\Http\Controllers\Admin\DashboardController::class, 'laporansearch'])->name('laporan.search');
 });
-
-// Route Petugas
-Route::group(['middleware' => ['auth', 'role:petugas'], 'prefix' => 'petugas'], function () {
-    Route::get('/dashboard', [PetugasController::class, 'index'])->name('petugas.dashboard');
-    Route::get('/akun', [PetugasController::class, 'akun'])->name('petugas.akun');
-    Route::put('/akun/update/{id}', [PetugasController::class, 'akunupdate'])->name('petugas.akun.update');
-    Route::get('/akun/password', [PetugasController::class, 'akunpassword'])->name('petugas.password');
-    Route::put('/akun/password/update/{id}', [PetugasController::class, 'akunpasswordupdate'])->name('petugas.password.update');
-
-    // Permohonan Informasi
-    Route::get('/permohonaninformasi', [PetugasPermohonanInformasiController::class, 'index'])->name('petugas.permohonaninformasi');
-    Route::get('/permohonaninformasi/proses/{id}', [PetugasPermohonanInformasiController::class, 'proses'])->name('petugas.permohonaninformasi.proses');
-    Route::get('/permohonaninformasi/show/{id}', [PetugasPermohonanInformasiController::class, 'show'])->name('petugas.permohonaninformasi.show');
-    Route::put('/permohonaninformasi/terima/{id}', [PetugasPermohonanInformasiController::class, 'terima'])->name('petugas.permohonaninformasi.terima');
-    Route::put('/permohonaninformasi/batalterima/{id}', [PetugasPermohonanInformasiController::class, 'batalterima'])->name('petugas.permohonaninformasi.batalterima');
-    Route::put('/permohonaninformasi/sendterima/{id}', [PetugasPermohonanInformasiController::class, 'sendterima'])->name('petugas.permohonaninformasi.sendterima');
-    Route::put('/permohonaninformasi/tolak/{id}', [PetugasPermohonanInformasiController::class, 'tolak'])->name('petugas.permohonaninformasi.tolak');
-    Route::put('/permohonaninformasi/sendtolak/{id}', [PetugasPermohonanInformasiController::class, 'sendtolak'])->name('petugas.permohonaninformasi.sendtolak');
-
-    // Pengajuan Keberatan
-    Route::get('/pengajuankeberatan', [PetugasPengajuanKeberatanController::class, 'index'])->name('petugas.pengajuankeberatan');
-    Route::get('/pengajuankeberatan/show/{id}', [PetugasPengajuanKeberatanController::class, 'show'])->name('petugas.pengajuankeberatan.show');
-    Route::put('/pengajuankeberatan/terima/{id}', [PetugasPengajuanKeberatanController::class, 'terima'])->name('petugas.pengajuankeberatan.terima');
-    Route::put('/pengajuankeberatan/tolak/{id}', [PetugasPengajuanKeberatanController::class, 'tolak'])->name('petugas.pengajuankeberatan.tolak');
-    Route::put('/pengajuankeberatan/sendterima/{id}', [PetugasPengajuanKeberatanController::class, 'sendterima'])->name('petugas.pengajuankeberatan.sendterima');
-    Route::put('/pengajuankeberatan/sendtolak/{id}', [PetugasPengajuanKeberatanController::class, 'sendtolak'])->name('petugas.pengajuankeberatan.sendtolak');
-});
-
-// Route User
-Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
-    Route::get('/dashboard', [UserController::class, 'indexlogin'])->name('user.dashboard');
-    Route::get('/akun', [UserController::class, 'akun'])->name('user.akun');
-    Route::put('/akun/update/{id}', [UserController::class, 'akunupdate'])->name('user.akun.update');
-    Route::get('/akun/password', [UserController::class, 'akunpassword'])->name('user.password');
-    Route::put('/akun/password/update/{id}', [UserController::class, 'akunpasswordupdate'])->name('user.password.update');
-
-    // Permohonan Informasi
-    Route::get('/permohonaninformasi', [PermohonanInformasiController::class, 'userpermohonaninformasi'])->name('user.permohonaninformasi');
-    Route::get('/permohonaninformasi/create', [PermohonanInformasiController::class, 'usercreatepermohonaninformasi'])->name('user.permohonaninformasi.create');
-    Route::post('/permohonaninformasi/store', [PermohonanInformasiController::class, 'userstorepermohonaninformasi'])->name('user.permohonaninformasi.store');
-    Route::get('/permohonaninformasi/show/{id}', [PermohonanInformasiController::class, 'usershowpermohonaninformasi'])->name('user.permohonaninformasi.show');
-    Route::get('/permohonaninformasi/edit/{id}', [PermohonanInformasiController::class, 'usereditpermohonaninformasi'])->name('user.permohonaninformasi.edit');
-    Route::put('/permohonaninformasi/update/{id}', [PermohonanInformasiController::class, 'userupdatepermohonaninformasi'])->name('user.permohonaninformasi.update');
-    Route::delete('/permohonaninformasi/destroy/{id}', [PermohonanInformasiController::class, 'userdestroypermohonaninformasi'])->name('user.permohonaninformasi.destroy');
-
-    // Pengajuan Keberatan
-    Route::get('/pengajuankeberatan', [PengajuanKeberatanController::class, 'index'])->name('user.pengajuankeberatan');
-    Route::get('/pengajuankeberatan/create', [PengajuanKeberatanController::class, 'create'])->name('user.pengajuankeberatan.create');
-    Route::get('/getpermohonaninformasi/{id}', [PengajuanKeberatanController::class, 'getPermohonanInformasi']);
-    Route::post('/pengajuankeberatan/store', [PengajuanKeberatanController::class, 'store'])->name('user.pengajuankeberatan.store');
-    Route::get('/pengajuankeberatan/show/{id}', [PengajuanKeberatanController::class, 'show'])->name('user.pengajuankeberatan.show');
-    Route::get('/pengajuankeberatan/edit/{id}', [PengajuanKeberatanController::class, 'edit'])->name('user.pengajuankeberatan.edit');
-    Route::put('/pengajuankeberatan/update/{id}', [PengajuanKeberatanController::class, 'update'])->name('user.pengajuankeberatan.update');
-    Route::delete('/pengajuankeberatan/destroy/{id}', [PengajuanKeberatanController::class, 'destroy'])->name('user.pengajuankeberatan.destroy');
-});    
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Route::get('/login', [LoginController::class, 'index']);
-// Route::post('/login', [LoginController::class, 'authenticate']);
