@@ -3,7 +3,6 @@
 use App\Http\Controllers\InformasiPublikController;
 use App\Http\Controllers\KontakKamiController;
 use App\Http\Controllers\PermohonanInformasiController;
-use App\Http\Controllers\PetugasPermohonanInformasiController;
 use App\Http\Controllers\ProfilKantorController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +53,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::put('/akun/password/update/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'akunpasswordupdate'])->name('password.update');
 
     //  Klasifikasi
-    Route::resource('/klasifikasi', App\Http\Controllers\Admin\KlasifikasiController::class);
+    Route::resource('/klasifikasi', App\Http\Controllers\Admin\KlasifikasiController::class)->except('show');
 
     // Informasi Publikasi
     Route::resource('/infopub', App\Http\Controllers\Admin\InformasiPublikController::class);
@@ -93,13 +92,17 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::delete('/petugas/destroy/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'userdestroy'])->name('petugas.destroy');
     Route::delete('/pemohon/destroy/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'userdestroy'])->name('pemohon.destroy');
 
+    // Profil Kantor
     Route::get('/profilkantor', [ProfilKantorController::class, 'index'])->name('profilkantor');
     Route::put('/profilkantor/update/{id}', [ProfilKantorController::class, 'update'])->name('profilkantor.update');
+
+    // Kotak Pesan
     Route::get('/kotakpesan', [KontakKamiController::class, 'index'])->name('kotakpesan');
     Route::delete('/kotakpesan/destroy/{id}', [KontakKamiController::class, 'destroy'])->name('kotakpesan.destroy');
 
-    Route::get('/laporan', [App\Http\Controllers\Admin\DashboardController::class, 'laporan'])->name('laporan');
-    Route::get('/laporan/search', [App\Http\Controllers\Admin\DashboardController::class, 'laporansearch'])->name('laporan.search');
+    // Report
+    Route::get('/laporan', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('report.index');
+    Route::get('/laporan/search', [App\Http\Controllers\Admin\ReportController::class, 'search'])->name('report.search');
 
     // Role
     Route::resource('/role', \App\Http\Controllers\Admin\RoleAndPermissionController::class);

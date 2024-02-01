@@ -11,6 +11,17 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PengajuanKeberatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view objections')->only('index');
+        $this->middleware('permission:create objections')->only('create', 'store');
+        $this->middleware('permission:edit objections')->only('edit', 'update');
+        $this->middleware('permission:delete objections')->only('destroy');
+        $this->middleware('permission:show objections')->only('show');
+        $this->middleware('permission:approve objections')->only('terima', 'sendterima', 'tolak', 'sendtolak');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,33 +29,26 @@ class PengajuanKeberatanController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $datapis = PengajuanKeberatan::join('permohonan_informasis', 'pengajuan_keberatans.permoinfo_id', '=', 'permohonan_informasis.id')
-                ->orderBy('pengajuan_keberatans.created_at', 'desc')
-                ->get(['pengajuan_keberatans.*']);
+        $user = auth()->user();
+        $datapis = PengajuanKeberatan::with('permohonaninformasi')
+            ->orderBy('pengajuan_keberatans.created_at', 'desc');
 
-            return view('be.pengajuankeberatan.home', [
-                'title' => 'Pengajuan Keberatan',
-                'datapis' => $datapis
-            ]);
-        } elseif (auth()->user()->hasRole('petugas')) {
-            $datapis = PengajuanKeberatan::join('permohonan_informasis', 'pengajuan_keberatans.permoinfo_id', '=', 'permohonan_informasis.id')
-                ->where('permohonan_informasis.petugas_id', auth()->user()->id)
-                ->orderBy('pengajuan_keberatans.created_at', 'desc')
-                ->get(['pengajuan_keberatans.*']);
-
-            return view('be.pengajuankeberatan.home', [
-                'title' => 'Pengajuan Keberatan',
-                'datapis' => $datapis
-            ]);
+        if ($user->hasRole('admin')) {
+            // Tidak perlu menambahkan filter tambahan untuk admin
+        } elseif ($user->hasRole('petugas')) {
+            $datapis->whereHas('permohonaninformasi', function ($query) use ($user) {
+                $query->where('petugas_id', $user->id);
+            });
         } else {
-            $datapis = PengajuanKeberatan::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
-
-            return view('be.pengajuankeberatan.home', [
-                'title' => 'Pengajuan Keberatan',
-                'datapis' => $datapis
-            ]);
+            $datapis->where('user_id', $user->id);
         }
+
+        $datapis = $datapis->get();
+
+        return view('be.pengajuankeberatan.home', [
+            'title' => 'Pengajuan Keberatan',
+            'datapis' => $datapis
+        ]);
     }
 
     /**
@@ -102,32 +106,26 @@ class PengajuanKeberatanController extends Controller
      */
     public function edit(PengajuanKeberatan $pengajuankeberatan)
     {
-        if (auth()->user()->hasRole('admin')) {
-            $datas = PermohonanInformasi::where('status', 3)
-                ->where('id', '!=', $pengajuankeberatan->permoinfo_id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+        $user = auth()->user();
+        $datas = PermohonanInformasi::where('status', 3)
+            ->where('id', '!=', $pengajuankeberatan->permoinfo_id);
 
-            return view('be.pengajuankeberatan.edit', [
-                'title' => 'Edit Pengajuan Keberatan',
-                'pengkeb' => $pengajuankeberatan,
-                'datas' => $datas
-            ]);
+        if ($user->hasRole('admin')) {
+            // Tidak perlu kondisi tambahan untuk admin
+        } elseif ($pengajuankeberatan->status == 0 && $user->id == $pengajuankeberatan->user_id) {
+            // Hanya pengguna dengan status 0 yang bisa mengakses
+            // Tambahan kondisi $user->id == $pengajuankeberatan->user_id untuk memastikan pengguna hanya mengedit pengajuan mereka sendiri
         } else {
-            if ($pengajuankeberatan->status == 0) {
-                $datas = PermohonanInformasi::where('user_id', auth()->user()->id)
-                    ->where('status', 3)
-                    ->where('id', '!=', $pengajuankeberatan->permoinfo_id)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
-                return view('be.pengajuankeberatan.edit', [
-                    'title' => 'Edit Pengajuan Keberatan',
-                    'pengkeb' => $pengajuankeberatan,
-                    'datas' => $datas
-                ]);
-            }
+            abort(403);
         }
+
+        $datas = $datas->orderBy('created_at', 'desc')->get();
+
+        return view('be.pengajuankeberatan.edit', [
+            'title' => 'Edit Pengajuan Keberatan',
+            'pengkeb' => $pengajuankeberatan,
+            'datas' => $datas
+        ]);
     }
 
     /**

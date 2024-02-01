@@ -8,6 +8,9 @@ use Spatie\Permission\Models\Role;
 
 class RoleAndPermissionController extends Controller
 {
+    public function __construct()
+    {
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +18,10 @@ class RoleAndPermissionController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $roles = Role::get();
 
         return view('be.role.home', [
@@ -30,6 +37,10 @@ class RoleAndPermissionController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         return view('be.role.create', [
             "title" => "Buat Role"
         ]);
@@ -43,6 +54,10 @@ class RoleAndPermissionController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $role = Role::create(['name' => $request->name]);
 
         $role->givePermissionTo($request->permissions);
@@ -70,6 +85,10 @@ class RoleAndPermissionController extends Controller
      */
     public function edit(Role $role)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         return view('be.role.edit', [
             "title" => "Edit Role",
             "role" => $role
@@ -85,6 +104,10 @@ class RoleAndPermissionController extends Controller
      */
     public function update(UpdateRoleRequest $request,  Role $role)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $role->update(['name' => $request->name]);
 
         $role->syncPermissions($request->permissions);
@@ -101,6 +124,10 @@ class RoleAndPermissionController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $role = Role::withCount('users')->findOrFail($id);
 
         // if any user where role.id = $id

@@ -89,8 +89,8 @@
                             <span>Kotak Pesan</span>
                         </a>
                     </li>
-                    <li class="sidebar-item @if (request()->routeIs('admin.laporan')) active @endif">
-                        <a href="{{ route('admin.laporan') }}" class='sidebar-link'>
+                    <li class="sidebar-item {{ request()->is('admin/laporan', 'admin/laporan/*') ? ' active' : '' }}">
+                        <a href="{{ route('admin.report.index') }}" class='sidebar-link'>
                             <i data-feather="printer" width="20"></i>
                             <span>Laporan</span>
                         </a>

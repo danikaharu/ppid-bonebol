@@ -9,6 +9,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class KlasifikasiController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:view classification')->only('index');
+        $this->middleware('permission:create classification')->only('create', 'store');
+        $this->middleware('permission:edit classification')->only('edit', 'update');
+        $this->middleware('permission:delete classification')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -54,16 +63,6 @@ class KlasifikasiController extends Controller
             Alert::error('Gagal', 'Klasifikasi gagal di tambahkan');
             return redirect()->route('admin.klasifikasi.index');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Klasifikasi  $klasifikasi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Klasifikasi $klasifikasi)
-    {
     }
 
     /**

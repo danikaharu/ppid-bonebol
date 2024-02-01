@@ -9,6 +9,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class InformasiPublikController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view information')->only('index');
+        $this->middleware('permission:create information')->only('create', 'store');
+        $this->middleware('permission:edit information')->only('edit', 'update');
+        $this->middleware('permission:delete information')->only('destroy');
+        $this->middleware('permission:show information')->only('show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,17 +25,21 @@ class InformasiPublikController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            return view('be.informasipublik.home', [
-                "title" => "Informasi Publik",
-                "informasis" => InformasiPublik::orderBy('created_at', 'desc')->get(),
-            ]);
+        $user = auth()->user();
+        $informasis = InformasiPublik::orderBy('created_at', 'desc');
+
+        if ($user->hasRole('admin')) {
+            // Tidak perlu menambahkan filter tambahan untuk admin
         } else {
-            return view('be.informasipublik.home', [
-                "title" => "Informasi Publik",
-                "informasis" => InformasiPublik::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get(),
-            ]);
+            $informasis->where('user_id', $user->id);
         }
+
+        $informasis = $informasis->get();
+
+        return view('be.informasipublik.home', [
+            "title" => "Informasi Publik",
+            "informasis" => $informasis,
+        ]);
     }
 
     /**
@@ -62,19 +75,11 @@ class InformasiPublikController extends Controller
             $attr['filesize'] = $filesize;
         }
 
-        $create = InformasiPublik::create($attr);
+        InformasiPublik::create($attr);
 
-        if ($create) {
-            Alert::success('Success', 'Informasi Berhasil di Upload');
-            if (auth()->user()->hasRole('admin')) {
-                return redirect()->route('admin.infopub.index');
-            } else {
-                return redirect()->route('petugas.informasipublik');
-            }
-        } else {
-            Alert::error('Failed', 'Informasi Gagal di Upload');
-            return redirect()->route('petugas.informasipublik');
-        }
+        Alert::success('Success', 'Informasi Berhasil di Upload');
+
+        return redirect()->route('admin.infopub.index');
     }
 
     /**
@@ -98,7 +103,7 @@ class InformasiPublikController extends Controller
                 ]);
             } else {
                 Alert::error('Maaf', 'Anda tidak mempunyai akses ke halaman ini.');
-                return redirect()->route('petugas.informasipublik');
+                return redirect()->route('admin.infopub.index');
             }
         }
     }
@@ -126,7 +131,7 @@ class InformasiPublikController extends Controller
                 ]);
             } else {
                 Alert::error('Maaf', 'Anda tidak mempunyai akses ke halaman ini.');
-                return redirect()->route('petugas.informasipublik');
+                return redirect()->route('admin.infopub.index');
             }
         }
     }
@@ -179,22 +184,10 @@ class InformasiPublikController extends Controller
             unlink($pathFile . $infopub->file);
         }
 
-        $data = $infopub->delete();
+        $infopub->delete();
 
-        if ($data) {
-            Alert::success('Success', 'Informasi Berhasil di Hapus');
-            if (auth()->user()->hasRole('admin')) {
-                return redirect()->route('admin.infopub.index');
-            } else {
-                return redirect()->route('petugas.informasipublik');
-            }
-        } else {
-            Alert::error('Failed', 'Informasi Gagal di Hapus');
-            if (auth()->user()->hasRole('admin')) {
-                return redirect()->route('admin.infopub.index');
-            } else {
-                return redirect()->route('petugas.informasipublik');
-            }
-        }
+        Alert::success('Success', 'Informasi Berhasil di Hapus');
+
+        return redirect()->route('admin.infopub.index');
     }
 }

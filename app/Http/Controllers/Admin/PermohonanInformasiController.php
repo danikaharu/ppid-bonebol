@@ -11,6 +11,16 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PermohonanInformasiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view request')->only('index');
+        $this->middleware('permission:create request')->only('create', 'store');
+        $this->middleware('permission:edit request')->only('edit', 'update');
+        $this->middleware('permission:delete request')->only('destroy');
+        $this->middleware('permission:show request')->only('show');
+        $this->middleware('permission:approve request')->only('proses', 'terima', 'sendterima', 'batalterima', 'tolak', 'sendtolak');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,30 +28,26 @@ class PermohonanInformasiController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $datapis = PermohonanInformasi::orderBy('created_at', 'desc')->get();
+        $user = auth()->user();
+        $datapis = PermohonanInformasi::orderBy('created_at', 'desc');
 
-            return view('be.permohonaninformasi.home', [
-                'title' => 'Permohonan Informasi',
-                'datapis' => $datapis
-            ]);
-        } elseif (auth()->user()->hasRole('petugas')) {
-            $datapis = PermohonanInformasi::where('petugas_id', auth()->user()->id)
-                ->orWhere('petugas_id', null)
-                ->orderBy('created_at', 'desc')->get();
-
-            return view('be.permohonaninformasi.home', [
-                'title' => 'Permohonan Informasi',
-                'datapis' => $datapis
-            ]);
+        if ($user->hasRole('admin')) {
+            // Tidak perlu menambahkan filter tambahan untuk admin
+        } elseif ($user->hasRole('petugas')) {
+            $datapis->where(function ($query) use ($user) {
+                $query->where('petugas_id', $user->id)
+                    ->orWhereNull('petugas_id');
+            });
         } else {
-            $datapis = PermohonanInformasi::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
-
-            return view('be.permohonaninformasi.home', [
-                'title' => 'Permohonan Informasi',
-                'datapis' => $datapis
-            ]);
+            $datapis->where('user_id', $user->id);
         }
+
+        $datapis = $datapis->get();
+
+        return view('be.permohonaninformasi.home', [
+            'title' => 'Permohonan Informasi',
+            'datapis' => $datapis
+        ]);
     }
 
     /**
