@@ -25,5 +25,9 @@ class KlasifikasiSeeder extends Seeder
         Klasifikasi::create([
             'klasifikasi' => 'Serta Merta',
         ]);
+
+        Klasifikasi::create([
+            'klasifikasi' => 'Dikecualikan',
+        ]);
     }
 }

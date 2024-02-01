@@ -158,4 +158,48 @@ return [
 
         'store' => 'default',
     ],
+
+    'list_permissions' => [
+        [
+            'group' => 'classifications',
+            'lists' => [
+                'view classification',
+                'create classification',
+                'edit classification',
+                'delete classification',
+            ]
+        ],
+        [
+            'group' => 'informations',
+            'lists' => [
+                'view information',
+                'create information',
+                'edit information',
+                'show information',
+                'delete information',
+            ]
+        ],
+        [
+            'group' => 'requests',
+            'lists' => [
+                'view request',
+                'create request',
+                'edit request',
+                'show request',
+                'delete request',
+                'approve request',
+            ]
+        ],
+        [
+            'group' => 'objections',
+            'lists' => [
+                'view objections',
+                'create objections',
+                'edit objections',
+                'delete objections',
+                'show objections',
+                'approve objections',
+            ]
+        ],
+    ],
 ];
