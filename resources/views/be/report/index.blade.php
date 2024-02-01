@@ -1,4 +1,4 @@
-@extends('be.layouts.app')
+@extends('layouts.be.app')
 
 @section('linkcss')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">

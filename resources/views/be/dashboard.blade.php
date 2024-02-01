@@ -1,4 +1,4 @@
-@extends('be.layouts.app')
+@extends('layouts.be.app')
 
 @section('container')
     <div class="page-title">
@@ -8,7 +8,7 @@
 
     <section class="section">
         <div class="row mb-2">
-            @role('admin')
+            @hasanyrole('admin|petugas')
                 <div class="col-12 col-md-4">
                     <div class="card card-statistic">
                         <div class="card-body p-0">
@@ -26,27 +26,7 @@
                         </div>
                     </div>
                 </div>
-            @endrole
-
-            @role('petugas')
-                <div class="col-12 col-md-4">
-                    <div class="card card-statistic">
-                        <div class="card-body p-0">
-                            <div class="d-flex flex-column">
-                                <div class='px-4 py-4 d-flex justify-content-between'>
-                                    <div>
-                                        <h3 class='card-title'>Informasi Publik</h3>
-                                        <p class="m-0 text-white">Total informasi publik yang diupload</p>
-                                    </div>
-                                    <div class="card-right d-flex align-items-center">
-                                        <p class="fs-2 fw-bold">{{ $infopub ?? '' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endrole
+            @endhasanyrole
 
             <div
                 class="col-12 @role('admin') col-md-4 @endrole @role('petugas') col-md-4 @endrole @role('user') col-md-6 @endrole">

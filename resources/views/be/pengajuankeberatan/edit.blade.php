@@ -1,4 +1,4 @@
-@extends('be.layouts.app')
+@extends('layouts.be.app')
 
 
 @section('container')
@@ -194,7 +194,7 @@
                                     }).format(myDate);
 
                                     const myFullDate =
-                                    `${myWeekDay}, ${myDay} ${myMonth} ${myYear}`;
+                                        `${myWeekDay}, ${myDay} ${myMonth} ${myYear}`;
 
                                     $("#myCard").hide();
                                     $("#myCard2").hide();
@@ -290,7 +290,7 @@
                                     }).format(myDate);
 
                                     const myFullDate =
-                                    `${myWeekDay}, ${myDay} ${myMonth} ${myYear}`;
+                                        `${myWeekDay}, ${myDay} ${myMonth} ${myYear}`;
 
                                     $("#myCard").hide();
                                     $("#myCard2").hide();

@@ -19,24 +19,25 @@
     <link rel="stylesheet" href="{{ asset('be/assets/vendors/choices.js/choices.min.css') }}" />
 
     <style>
-         .bg-grad {
-            background-image: linear-gradient(to right, #1F1C2C 0%, #928DAB  51%, #1F1C2C  100%);
+        .bg-grad {
+            background-image: linear-gradient(to right, #1F1C2C 0%, #928DAB 51%, #1F1C2C 100%);
             padding: 15px 15px;
             text-align: center;
             text-transform: uppercase;
             transition: 0.5s;
             background-size: 200% auto;
-            color: white;            
+            color: white;
             box-shadow: 0 0 20px #eee;
             border-radius: 10px;
             display: block;
-          }
+        }
 
-          .bg-grad:hover {
-            background-position: right center; /* change the direction of the change here */
+        .bg-grad:hover {
+            background-position: right center;
+            /* change the direction of the change here */
             color: #fff;
             text-decoration: none;
-          }
+        }
     </style>
 
     @yield('linkcss')
@@ -44,15 +45,15 @@
 
 <body>
     <div id="app">
-        @include('be.layouts.sidebar')
+        @include('layouts.be.include.sidebar')
         <div id="main">
-            @include('be.layouts.nav')
+            @include('layouts.be.include.nav')
 
             <div class="main-content container-fluid">
                 @yield('container')
             </div>
 
-            @include('be.layouts.footer')
+            @include('layouts.be.include.footer')
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

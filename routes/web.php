@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\InformasiPublikController;
 use App\Http\Controllers\KontakKamiController;
 use App\Http\Controllers\PermohonanInformasiController;
 use App\Http\Controllers\ProfilKantorController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/home', function () {
-//     return view('welcome');
-// });
 
-Route::get('/', [UserController::class, 'index'])->name('home');
+// Home
+Route::get('/', [App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
+Route::post('/kontakkami', [App\Http\Controllers\User\HomeController::class, 'kontakkami'])->name('kontakkami');
 
-Route::get('/daftar-informasi-publik', [InformasiPublikController::class, 'index'])->name('infopub');
-Route::get('/daftar-informasi-publik/download/{id}', [InformasiPublikController::class, 'download'])->name('download.infopub');
+// Informasi Publik
+Route::get('/daftar-informasi-publik', [App\Http\Controllers\User\InformasiPublikController::class, 'index'])->name('infopub');
+Route::get('/daftar-informasi-publik/download/{informasipublik}', [App\Http\Controllers\User\InformasiPublikController::class, 'download'])->name('download.infopub');
 
 Route::get('/pemohon', [PermohonanInformasiController::class, 'index'])->name('pemohon.register');
 
@@ -36,9 +34,10 @@ Route::post('/pemohon/lembaga', [PermohonanInformasiController::class, 'storelem
 Route::get('/pemohon/perorangan', [PermohonanInformasiController::class, 'indexperorangan'])->name('perorangan.register');
 Route::post('/pemohon/perorangan', [PermohonanInformasiController::class, 'storeperorangan'])->name('perorangan.register.store');
 
-Route::get('/statistik', [UserController::class, 'statistik'])->name('statistik');
+// Statistik
+Route::get('/statistik', [App\Http\Controllers\User\StatisticController::class, 'index'])->name('statistik');
 
-Route::post('/kontakkami', [UserController::class, 'kontakkami'])->name('kontakkami');
+
 
 Auth::routes(['register' => false]);
 

@@ -1,4 +1,4 @@
-@extends('be.layouts.app')
+@extends('layouts.be.app')
 
 @section('container')
     @include('sweetalert::alert')

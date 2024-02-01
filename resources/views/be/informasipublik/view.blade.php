@@ -1,4 +1,4 @@
-@extends('be.layouts.app')
+@extends('layouts.be.app')
 
 @section('container')
     <div class="d-flex mb-4 gap-3 align-items-center">
