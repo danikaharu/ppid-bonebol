@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\InformasiPublik;
-use App\Models\KontakKami;
-use App\Models\PengajuanKeberatan;
-use App\Models\PermohonanInformasi;
-use App\Models\ProfilKantor;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\ContactUs\StoreContactUsRequest;
+use App\Models\{InformasiPublik, KontakKami, PengajuanKeberatan, PermohonanInformasi, ProfilKantor};
 use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
@@ -34,25 +30,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function kontakkami(Request $request)
+    public function kontakkami(StoreContactUsRequest $request)
     {
-        $request->validate([
-            'nama' => ['required'],
-            'email' => ['required', 'email'],
-            'pesan' => ['required']
-        ]);
+        try {
+            $attr = $request->validated();
 
-        $kontakkami = KontakKami::create([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'pesan' => $request->pesan
-        ]);
+            KontakKami::create($attr);
 
-        if ($kontakkami) {
             Alert::success('Berhasil', 'Pesan anda berhasil dikirim');
             return redirect()->route('home');
-        } else {
-            Alert::success('Berhasil', 'PPesan anda gagal dikirim');
+        } catch (\Throwable $th) {
+            Alert::success('Berhasil', 'Pesan anda gagal dikirim');
             return redirect()->route('home');
         }
     }
