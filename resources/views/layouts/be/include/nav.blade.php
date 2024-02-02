@@ -20,7 +20,8 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="{{ route('admin.akun') }}"><i data-feather="user"></i> Akun</a>
+                    <a class="dropdown-item" href="{{ route('admin.account') }}"><i data-feather="user"></i>
+                        Akun</a>
                     <div class="dropdown-divider"></div>
                     <form action="{{ route('logout') }}" method="post">
                         @csrf

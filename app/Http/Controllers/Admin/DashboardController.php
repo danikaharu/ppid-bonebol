@@ -74,56 +74,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function akun()
-    {
-        return view('be.account', [
-            'title' => 'Pengaturan Akun'
-        ]);
-    }
-
-    public function akunUpdate(Request $request, $id)
-    {
-        $request->validate([
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
-            'name' => ['required'],
-        ]);
-
-        $user = User::findorfail($id);
-
-        $user_punya = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
-
-        $user->update($user_punya);
-
-        Alert::success('Berhasil', 'Data anda berhasil diperbarui');
-        return redirect()->route('admin.akun');
-    }
-
-    public function akunpassword()
-    {
-        return view('be.password', [
-            'title' => 'Pengaturan Password'
-        ]);
-    }
-
-    public function akunpasswordupdate(Request $request, $id)
-    {
-        $request->validate([
-            'password' => ['required', new MatchOldPassword],
-            'password_baru' => ['required'],
-            'konfirmasi_password_baru' => ['same:password_baru']
-        ]);
-
-        $user = User::findorfail($id);
-        $user->update([
-            'password' => Hash::make($request->password_baru),
-        ]);
-
-        Alert::success('Berhasil', 'Password anda berhasil diperbarui');
-        return redirect()->route('admin.password');
-    }
 
     public function user()
     {

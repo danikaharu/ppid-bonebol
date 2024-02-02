@@ -26,18 +26,12 @@ Route::post('/kontakkami', [App\Http\Controllers\User\HomeController::class, 'ko
 Route::get('/daftar-informasi-publik', [App\Http\Controllers\User\InformasiPublikController::class, 'index'])->name('infopub');
 Route::get('/daftar-informasi-publik/download/{informasipublik}', [App\Http\Controllers\User\InformasiPublikController::class, 'download'])->name('download.infopub');
 
-Route::get('/pemohon', [PermohonanInformasiController::class, 'index'])->name('pemohon.register');
-
-Route::get('/pemohon/lembaga', [PermohonanInformasiController::class, 'indexlembaga'])->name('lembaga.register');
-Route::post('/pemohon/lembaga', [PermohonanInformasiController::class, 'storelembaga'])->name('lembaga.register.store');
-
-Route::get('/pemohon/perorangan', [PermohonanInformasiController::class, 'indexperorangan'])->name('perorangan.register');
-Route::post('/pemohon/perorangan', [PermohonanInformasiController::class, 'storeperorangan'])->name('perorangan.register.store');
+Route::get('/pemohon', [App\Http\Controllers\User\PermohonanInformasiController::class, 'index'])->name('pemohon.index');
+Route::get('/pemohon/{jenis}', [App\Http\Controllers\User\PermohonanInformasiController::class, 'register'])->name('pemohon.register');
+Route::post('/pemohon/{jenis}', [App\Http\Controllers\User\PermohonanInformasiController::class, 'store'])->name('pemohon.store');
 
 // Statistik
 Route::get('/statistik', [App\Http\Controllers\User\StatisticController::class, 'index'])->name('statistik');
-
-
 
 Auth::routes(['register' => false]);
 
@@ -46,10 +40,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/akun', [App\Http\Controllers\Admin\DashboardController::class, 'akun'])->name('akun');
-    Route::put('/akun/update/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'akunupdate'])->name('akun.update');
-    Route::get('/akun/password', [App\Http\Controllers\Admin\DashboardController::class, 'akunpassword'])->name('password');
-    Route::put('/akun/password/update/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'akunpasswordupdate'])->name('password.update');
+    // Account
+    Route::get('/akun', [App\Http\Controllers\Admin\AccountController::class, 'index'])->name('account');
+    Route::put('/akun/update/{id}', [App\Http\Controllers\Admin\AccountController::class, 'update'])->name('account.update');
+    Route::get('/akun/password', [App\Http\Controllers\Admin\AccountController::class, 'password'])->name('account.password');
+    Route::put('/akun/password/update/{id}', [App\Http\Controllers\Admin\AccountController::class, 'passwordupdate'])->name('account.password.update');
 
     //  Klasifikasi
     Route::resource('/klasifikasi', App\Http\Controllers\Admin\KlasifikasiController::class)->except('show');
@@ -65,7 +60,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::put('/permohonaninformasi/sendterima/{id}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'sendterima'])->name('permohonaninformasi.sendterima');
     Route::put('/permohonaninformasi/tolak/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'tolak'])->name('permohonaninformasi.tolak');
     Route::put('/permohonaninformasi/sendtolak/{permohonaninformasi}', [App\Http\Controllers\Admin\PermohonanInformasiController::class, 'sendtolak'])->name('permohonaninformasi.sendtolak');
-
 
     // Pengajuan Keberatan
     Route::resource('/pengajuankeberatan', App\Http\Controllers\Admin\PengajuanKeberatanController::class);
