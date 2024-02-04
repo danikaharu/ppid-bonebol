@@ -142,7 +142,5 @@ class RoleAndPermissionController extends Controller
                 ->route('admin.role.index')
                 ->with('error', __('Tidak bisa hapus role.'));
         }
-
-        return redirect()->route('admin.role.index');
     }
 }

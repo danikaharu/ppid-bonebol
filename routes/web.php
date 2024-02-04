@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\KontakKamiController;
-use App\Http\Controllers\PermohonanInformasiController;
-use App\Http\Controllers\ProfilKantorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -86,12 +83,12 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::delete('/pemohon/destroy/{id}', [App\Http\Controllers\Admin\DashboardController::class, 'userdestroy'])->name('pemohon.destroy');
 
     // Profil Kantor
-    Route::get('/profilkantor', [ProfilKantorController::class, 'index'])->name('profilkantor');
-    Route::put('/profilkantor/update/{id}', [ProfilKantorController::class, 'update'])->name('profilkantor.update');
+    Route::get('/profilkantor', [App\Http\Controllers\Admin\ProfilKantorController::class, 'index'])->name('profilkantor');
+    Route::put('/profilkantor/update/{id}', [App\Http\Controllers\Admin\ProfilKantorController::class, 'update'])->name('profilkantor.update');
 
     // Kotak Pesan
-    Route::get('/kotakpesan', [KontakKamiController::class, 'index'])->name('kotakpesan');
-    Route::delete('/kotakpesan/destroy/{id}', [KontakKamiController::class, 'destroy'])->name('kotakpesan.destroy');
+    Route::get('/kotakpesan', [App\Http\Controllers\Admin\KontakKamiController::class, 'index'])->name('kotakpesan');
+    Route::delete('/kotakpesan/destroy/{id}', [App\Http\Controllers\Admin\KontakKamiController::class, 'destroy'])->name('kotakpesan.destroy');
 
     // Report
     Route::get('/laporan', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('report.index');

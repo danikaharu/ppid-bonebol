@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <form action="{{ route('user.permohonaninformasi.store') }}" method="POST">
+                            <form action="{{ route('admin.permohonaninformasi.store') }}" method="POST">
                                 @csrf
                                 <div class="form-body">
                                     <div class="row">

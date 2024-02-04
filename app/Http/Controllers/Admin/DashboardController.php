@@ -58,7 +58,7 @@ class DashboardController extends Controller
             $pengkeb_belum = 0;
         }
 
-        return view('be.dashboard', [
+        return view('be.dashboard.index', [
             "title" => "Dashboard",
             "infopub" => $infopub,
             "permoinfo" => $permoinfo,

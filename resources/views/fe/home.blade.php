@@ -18,7 +18,7 @@
                         <div class="carousel-caption d-none d-md-block">
                             <h1 class="carousel-title">Pejabat Pengelola Informasi & Dokumentasi
                             </h1>
-                            <a href="{{ route('pemohon.register') }}" class="btn btn-primary btn-rounded"><i
+                            <a href="{{ route('pemohon.index') }}" class="btn btn-primary btn-rounded"><i
                                     class="ti-upload"></i> Permohonan Informasi</a>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                                     <i class="ti-upload"></i>
                                 </div>
                                 <div class="infos-wrapper">
-                                    <a href={{ route('pemohon.register') }}>
+                                    <a href={{ route('pemohon.index') }}>
                                         <h5 class="text-white">Permohonan Informasi</h5>
                                         <p class="text-white">Permohonan Informasi</p>
                                     </a>
